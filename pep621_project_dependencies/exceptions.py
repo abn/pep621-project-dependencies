@@ -1,0 +1,2 @@
+class DependencySpecificationError(ValueError):
+    pass
