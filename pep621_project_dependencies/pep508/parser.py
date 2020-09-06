@@ -61,6 +61,11 @@ class PEP508Transformer(Transformer):
         value["markers"] = " ".join(markers)
         return value
 
+    def extras(self, tokens):  # noqa
+        return {
+            "extras": [token.value for token in tokens]
+        }
+
     def start(self, tokens) -> Dict[str, Any]:  # noqa
         data = {"name": tokens[0].value}
         for token in tokens[1:]:

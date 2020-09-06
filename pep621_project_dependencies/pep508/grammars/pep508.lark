@@ -2,16 +2,16 @@
 start: _requirement
 
 _requirement: _full_name (_MARKER_SEPARATOR marker_spec)?
-_full_name: NAME _extras? (version_specification | direct_reference)?
-_extras: _L_BRACKET _extra? _R_BRACKET
+_full_name: NAME extras? (version_specification | direct_reference)?
+extras: _L_BRACKET _extra? _R_BRACKET
 _extra: EXTRA (_COMMA EXTRA)*
 version_specification: (_version_many | _L_PAREN _version_many _R_PAREN)
 _version_many: _single_version (_COMMA _single_version)*
 _single_version: LEGACY_VERSION_CONSTRAINT
 direct_reference: _AT ( url_reference | vcs_reference )
 url_reference: URI ("#" hash)?
-vcs_reference: vcs "+" URI (_AT revision)?
-hash: ALNUM "=" ALNUM+
+vcs_reference: vcs "+" URI (_AT ALNUM )?
+hash: ALNUM "=" ALNUM
 revision: NAME
 vcs: "git" | "hg" | "svn" | "bz"
 marker_spec: marker
