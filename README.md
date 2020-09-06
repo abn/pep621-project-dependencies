@@ -11,6 +11,34 @@ This is not supported code, this is put together for demonstration purposes only
 
 ## Example Usage
 ### From PEP 508 to TOML
+#### Versioned Dependencies
+```console
+$ python -m pep621_project_dependencies -f toml "pycowsay (==0.0.0.1)"
+[project.dependencies]
+pycowsay = { version = "==0.0.0.1" }
+
+[project.optional-dependencies]
+
+
+$ python -m pep621_project_dependencies -f toml "requests[security,tests] (>= 2.8.1, == 2.8.*) ; python_version < '2.7'"
+[project.dependencies]
+requests = { extras = [ "security", "tests",], markers = "python_version < '2.7'", version = ">= 2.8.1, == 2.8.*" }
+
+[project.optional-dependencies]
+
+```
+
+#### Direct References (URL)
+```console
+$ python -m pep621_project_dependencies -f toml "pip @ https://github.com/pypa/pip/archive/1.3.1.zip#sha1=da9234ee9982d4bbb3c72346a6de940a148ea686"
+[project.dependencies]
+pip = { url = "https://github.com/pypa/pip/archive/1.3.1.zip", hash = "sha1=da9234ee9982d4bbb3c72346a6de940a148ea686" }
+
+[project.optional-dependencies]
+
+```
+
+#### Direct References (VCS)
 ```console
 $ python -m pep621_project_dependencies -f toml "sphinx @ git+ssh://git@github.com/sphinx-doc/sphinx.git@master"
 [project.dependencies]
@@ -24,6 +52,7 @@ $ python -m pep621_project_dependencies -f toml "sphinx @ git+ssh://git@github.c
 [project.optional-dependencies.doc]
 sphinx = { url = "git+ssh://git@github.com/sphinx-doc/sphinx.git@master" }
 ```
+**Note:** See `TODO` section regarding url parsing issue.
 
 ### From TOML to PEP 508
 ```console
@@ -48,3 +77,6 @@ pytest (<6) ; python_version < '3.5' and extra == 'tests'
 pytest (>=6) ; python_version >= '3.5' and extra == 'tests'
 mock (>= 1.0.1, < 4) ; python_version < '3.4' and extra == 'tests'
 ```
+
+## TODO
+- [ ] Enhance PEP 508 URI parsing to decompose revision
