@@ -42,7 +42,8 @@ pip = { url = "https://github.com/pypa/pip/archive/1.3.1.zip", hash = "sha1=da92
 ```console
 $ python -m pep621_project_dependencies -f toml "sphinx @ git+ssh://git@github.com/sphinx-doc/sphinx.git@master"
 [project.dependencies]
-sphinx = { url = "git+ssh://git@github.com/sphinx-doc/sphinx.git@master" }
+[project.dependencies]
+sphinx = { url = "ssh://git@github.com/sphinx-doc/sphinx.git", vcs = "git", revision = "master" }
 
 [project.optional-dependencies]
 
@@ -50,9 +51,8 @@ $ python -m pep621_project_dependencies -f toml "sphinx @ git+ssh://git@github.c
 [project.dependencies]
 
 [project.optional-dependencies.doc]
-sphinx = { url = "git+ssh://git@github.com/sphinx-doc/sphinx.git@master" }
+sphinx = { url = "ssh://git@github.com/sphinx-doc/sphinx.git", vcs = "git", revision = "master" }
 ```
-**Note:** See `TODO` section regarding url parsing issue.
 
 ### From TOML to PEP 508
 ```console
@@ -79,4 +79,5 @@ mock (>= 1.0.1, < 4) ; python_version < '3.4' and extra == 'tests'
 ```
 
 ## TODO
-- [ ] Enhance PEP 508 URI parsing to decompose revision
+- [x] Enhance PEP 508 URI parsing to decompose revision
+- [ ] Add examples with multiple URI fragments?

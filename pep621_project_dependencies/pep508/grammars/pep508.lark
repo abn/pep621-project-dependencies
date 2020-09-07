@@ -9,11 +9,12 @@ version_specification: (_version_many | _L_PAREN _version_many _R_PAREN)
 _version_many: _single_version (_COMMA _single_version)*
 _single_version: LEGACY_VERSION_CONSTRAINT
 direct_reference: _AT ( url_reference | vcs_reference )
-url_reference: URI ("#" hash)?
-vcs_reference: vcs "+" URI (_AT ALNUM )?
-hash: ALNUM "=" ALNUM
-revision: NAME
-vcs: "git" | "hg" | "svn" | "bz"
+url_reference: URI ("#" fragments)?
+vcs_reference: VCS "+" URI (_AT revision )?
+fragments: FRAGMENT ("," FRAGMENT)? ","?
+FRAGMENT: ALNUM "=" ALNUM
+revision: ALNUM
+VCS: "git" | "hg" | "svn" | "bz"
 marker_spec: marker
 
 NAME: /[a-zA-Z][a-zA-Z0-9-_.]*/
@@ -22,7 +23,7 @@ FULL_NAME: NAME
 EXTRA: NAME
 VERSION_CONSTRAINT: /(~=|==|!=|<=|>=|<|>|===)((?:(?<====)\s*[^\s]*)|(?:(?<===|!=)\s*v?(?:[0-9]+!)?[0-9]+(?:\.[0-9]+)*(?:[-_.]?(a|b|c|rc|alpha|beta|pre|preview)[-_.]?[0-9]*)?(?:(?:-[0-9]+)|(?:[-_.]?(post|rev|r)[-_.]?[0-9]*))?(?:(?:[-_.]?dev[-_.]?[0-9]*)?(?:\+[a-z0-9]+(?:[-_.][a-z0-9]+)*)? # local|\.\*)?)|(?:(?<=~=)\s*v?(?:[0-9]+!)?[0-9]+(?:\.[0-9]+)+(?:[-_.]?(a|b|c|rc|alpha|beta|pre|preview)[-_.]?[0-9]*)?(?:(?:-[0-9]+)|(?:[-_.]?(post|rev|r)[-_.]?[0-9]*))?(?:[-_.]?dev[-_.]?[0-9]*)?)|(?:(?<!==|!=|~=)\s*v?(?:[0-9]+!)?[0-9]+(?:\.[0-9]+)*(?:[-_.]?(a|b|c|rc|alpha|beta|pre|preview)[-_.]?[0-9]*)?(?:(?:-[0-9]+)|(?:[-_.]?(post|rev|r)[-_.]?[0-9]*))?(?:[-_.]?dev[-_.]?[0-9]*)?))/i
 LEGACY_VERSION_CONSTRAINT: /(~=|==|!=|<=|>=|<|>)\s*[^,;\s)]*/i
-URI: /[^ #]+/
+URI: LETTER+ ":" "/"~2..2 /[^ #\/]+/ /[^ #@]+/
 _MARKER_SEPARATOR: ";"
 _L_PAREN: "("
 _R_PAREN: ")"

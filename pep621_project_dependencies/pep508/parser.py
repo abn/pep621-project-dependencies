@@ -14,18 +14,36 @@ class PEP508Transformer(Transformer):
     def version_specification(self, tokens):  # noqa
         return {"version": ", ".join(map(lambda t: t.value, tokens))}
 
+    def revision(self, tokens):  # noqa
+        return tokens[0].value
+
     def vcs_reference(self, tokens):  # noqa
         return {
-            "vcs": tokens[0],
+            "vcs": tokens[0].value,
             "url": tokens[1].value,
             "revision": tokens[2] if len(tokens) > 2 else None,
         }
+
+    def fragments(self, tokens):  # noqa
+        value = {"fragments": []}
+        for token in tokens:
+            if "=" in token.value:
+                algorithm, checksum = token.value.split("=", 1)
+                if algorithm in {"md5", "sha1", "sha224", "sha256", "sha384", "sha512"}:
+                    value["hash"] = token.value
+                    continue
+            value["fragments"].append(token.value)
+        return value
 
     def hash(self, tokens):  # noqa
         return f"{tokens[0].value}={tokens[1].value}"
 
     def url_reference(self, tokens):  # noqa
-        return {"url": tokens[0].value, "hash": tokens[1] if len(tokens) > 1 else None}
+        # TODO: Handle additional fragments?
+        return {
+            "url": tokens[0].value,
+            "hash": tokens[1].get("hash") if len(tokens) > 1 else None,
+        }
 
     def direct_reference(self, tokens):  # noqa
         return tokens[0]
@@ -62,9 +80,7 @@ class PEP508Transformer(Transformer):
         return value
 
     def extras(self, tokens):  # noqa
-        return {
-            "extras": [token.value for token in tokens]
-        }
+        return {"extras": [token.value for token in tokens]}
 
     def start(self, tokens) -> Dict[str, Any]:  # noqa
         data = {"name": tokens[0].value}

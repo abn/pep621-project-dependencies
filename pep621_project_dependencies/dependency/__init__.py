@@ -45,6 +45,3 @@ def make_dependency_from_pep508(text: str) -> DependencyType:
     name = data.pop("name")
     in_optional = data.pop("in-optional", None)
     return make_dependency_from_specification(name, data, in_optional)
-
-
-# def write_to_toml()
