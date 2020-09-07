@@ -118,22 +118,22 @@ class DirectDependency(Dependency):
             if self.vcs not in {"git", "hg", "svn", "bz"}:
                 # Maybe this should be a warning
                 raise DependencySpecificationError(
-                    f"Invalid vcs ({self.vcs}) specified for direct dependency"
+                    f"Invalid vcs ({self.vcs}) specified for direct dependency ({self.name})"
                 )
 
             if self.hash:
                 raise DependencySpecificationError(
-                    f"A hash cannot be specified for a vcs direct dependency"
+                    f"A hash cannot be specified for a vcs direct dependency ({self.name})"
                 )
 
         if not self.is_vcs:
             if self.revision is not None:
                 raise DependencySpecificationError(
-                    f"Invalid direct dependency specified, only vcs dependencies can request a revision"
+                    f"Invalid direct dependency ({self.name}) specified, only vcs dependencies can request a revision"
                 )
 
         if self.hash and "=" not in self.hash:
             raise DependencySpecificationError(
-                f"Invalid hash ({self.hash}) specified for direct dependency, "
+                f"Invalid hash ({self.hash}) specified for direct dependency ({self.name}), "
                 "expected value of the form <hash-algorithm>=<expected-hash>"
             )

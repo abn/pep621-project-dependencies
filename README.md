@@ -78,6 +78,12 @@ pytest (>=6) ; python_version >= '3.5' and extra == 'tests'
 mock (>= 1.0.1, < 4) ; python_version < '3.4' and extra == 'tests'
 ```
 
+### Validation Error
+```console
+$ python -m pep621_project_dependencies -f pep508 tests/fixtures/invalid.toml 
+ERROR: Invalid direct dependency (pip) specified, only vcs dependencies can request a revision
+```
+
 ## TODO
 - [x] Enhance PEP 508 URI parsing to decompose revision
 - [ ] Add examples with multiple URI fragments?
